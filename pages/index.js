@@ -105,11 +105,173 @@ const [testingImage, setTestingImage] =  useState('Hi there this testing text')
       })
   }
 
+  const testingPdfDownlaod = ()=>{
+
+    const doc  = new jsPDF();
+    doc.setFont("centred", "normal");
+    doc.setFontSize(11);
+    doc.text("Paciente: Marcos", 20, 30, null, null,);
+
+    doc.setFontSize(11);
+    
+    doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+
+    doc.setFontSize(11);
+    doc.text("Fecha de la visita: 24-05-2022", 20, 40, null, null,);
+
+    doc.setFontSize(11);
+    doc.text("Hora: 08:56", 100, 40, null, null,);
+    
+
+    doc.setFontSize(11);
+    // doc.setFont("paciente", "bold");
+    doc.text("Antecedentes del paciente", 20, 60);
+    doc.setLineWidth(0.60);
+    doc.line(20, 62, 180, 62);
+    
+    doc.setFontSize(11);
+    doc.text("Edad", 20, 70);
+
+    doc.setFontSize(11);
+    doc.text("40", 40, 70);
+
+    doc.setFontSize(11);
+    doc.text("Sexo", 20, 75);
+
+    doc.setFontSize(11);
+    doc.text("Hombre", 40, 75);
+
+    doc.setFontSize(11);
+    doc.text("Trabajo", 20, 80);
+
+    doc.setFontSize(11);
+    doc.text("Comercial", 40, 80);
+
+
+    doc.setFontSize(11);
+    doc.text("Peso", 120, 70);
+
+    doc.setFontSize(11);
+    doc.text("82", 140, 70);
+
+    doc.setFontSize(11);
+    doc.text("Altura", 120, 75);
+
+    doc.setFontSize(11);
+    doc.text("180", 140, 75);
+
+    doc.setFontSize(11);
+    doc.text("Hobby", 120, 80);
+
+    doc.setFontSize(11);
+    doc.text("Natación", 140, 80);
+
+    doc.text("¿Dónde tiene el dolor?", 20, 100);
+
+    doc.text("Rodilla izquierda por el lado interior y parte trasera", 23, 110);
+    doc.setLineWidth(0.1);
+    doc.rect(20, 105, 165, 25);
+
+    doc.text("¿Qué tipo de dolor?", 20, 140);
+
+     doc.text("Pinchazos en el ligamento, al sobrecargarse", 23, 150);
+    doc.setLineWidth(0.1);
+    doc.rect(20, 145, 165, 25);
+
+    doc.text("¿En qué situaciones le duele?", 20, 180);
+    
+    doc.text("Cuando se levanta de la silla y está frio, hasta que se calienta", 23, 190);
+    doc.setLineWidth(0.1);
+    doc.rect(20, 185, 165, 25);
+
+
+    doc.text("¿Desde cuándo le duele?", 20, 220);
+    
+    doc.text("Desde hace dos semanas que empezó a jugar al Baloncesto", 23, 230);
+    doc.setLineWidth(0.1);
+    doc.rect(20, 225, 165, 25);
+
+
+    doc.text("Lesiones previas:", 20, 260);
+
+    doc.text("Hernias discales en la columna", 23, 270);
+    doc.setLineWidth(0.1);
+    doc.rect(20, 265, 165, 25);
+   
+    doc.addPage();
+
+    doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+
+    doc.text("Observación clínica", 20, 30);
+    doc.setLineWidth(0.60);
+    doc.line(20, 33, 180, 33);
+
+    doc.text("Angulaciones", 20, 39);
+
+    doc.text("Angulaciones de flexo-extensión pie izquierdo:", 20, 48);
+
+
+    doc.addPage();
+
+    doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+
+    doc.text("Observación clínica", 20, 30);
+    doc.setLineWidth(0.60);
+    doc.line(20, 33, 180, 33);
+
+    doc.addPage();
+
+     doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+
+    doc.text("Observación clínica", 20, 30);
+    doc.setLineWidth(0.60);
+    doc.line(20, 33, 180, 33);
+
+
+    doc.addPage();
+
+    doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+
+   doc.text("Observación clínica", 20, 30);
+   doc.setLineWidth(0.60);
+   doc.line(20, 33, 180, 33);
+
+
+   doc.text("Presiones promedio", 20, 120);
+   doc.addImage("./images/l3.png", "png", 50, 122, 80, 80);
+   
+   doc.addImage("./images/r4.png", "png", 100, 122, 80, 80);
+   
+
+   doc.addPage();
+
+   doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+
+  doc.text("Observación clínica", 20, 30);
+  doc.setLineWidth(0.60);
+  doc.line(20, 33, 180, 33);
+
+  doc.addPage();
+
+  doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+
+ doc.text("Observación clínica", 20, 30);
+ doc.setLineWidth(0.60);
+ doc.line(20, 33, 180, 33);
+
+
+
+    doc.output('dataurlnewwindow');
+
+
+
+  }
+
 
 
   return (
     <>
-
+    <button type='button3' onClick={testingPdfDownlaod}>Test</button>
     <div className="row mb-3">
     {
       users && users.length ? (

@@ -109,6 +109,15 @@ const [testingImage, setTestingImage] =  useState('Hi there this testing text')
 
   return (
     <>
+     <div className="form-group">
+            <label for="Diagnóstico">Diagnóstico</label>
+            <textarea className="form-control" rows="3"></textarea>
+         </div>
+
+         <div className="form-group">
+            <label for="Diagnóstico">Recomendación de tratamiento</label>
+            <textarea className="form-control" rows="3"></textarea>
+         </div>
 
     <div className="row mb-3">
     {
@@ -174,8 +183,12 @@ const [testingImage, setTestingImage] =  useState('Hi there this testing text')
 
     {
         graphData && graphData.length ?
-        (
+        ( <>
+        
           <GraphComponent setLoading={setLoading} data={graphData} />
+         
+
+          </>
           )
         :<></>
 

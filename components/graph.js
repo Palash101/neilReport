@@ -23,6 +23,12 @@ function GraphComponent(props){
     const [max3,setMax3] = useState();
 
 
+    const [images1,setImages1] = useState([]);
+    const [images2,setImages2] = useState([]);
+    const [images3,setImages3] = useState([]);
+
+
+
 // left
 const l_stancetime = []
 const l_flytime = []
@@ -79,6 +85,8 @@ var layout3
 
 const [image , setImage] = useState([])
 
+const [imagePdfArray,setImagePdfArray] = useState({})
+
 
 
 useEffect(()=>{
@@ -93,55 +101,72 @@ const downlaoadimg = ()=>{
         const doc = new jsPDF();
         doc.setFontSize(24);  
         doc.text("Graph Layouts",20, 25);
-
         doc.setFontSize(18);
 
-        Plotly.toImage('plot1', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
-            imgs.push({title:'Graph Layout 1',image:dataURL});
+        images1.map((item) => {
+            doc.text(item.title,20,35);
+            doc.addImage(item.image,'JPEG',20,50,200,160);
+            doc.addPage();
+        })
+        images2.map((item) => {
+            doc.text(item.title,20,35);
+            doc.addImage(item.image,'JPEG',20,50,200,160);
+            doc.addPage();
+        })
+        images3.map((item) => {
+            doc.text(item.title,20,35);
+            doc.addImage(item.image,'JPEG',20,50,200,160);
+            doc.addPage();
+        })
+         doc.save("testing.pdf");
 
-            doc.text('Layout 1',20, 35);
-            doc.addImage(dataURL,'JPEG',20,50,200,160);
-            console.log(dataURL)
 
-            Plotly.toImage('plot2', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
-                imgs.push({title:'Graph Layout 2',image:dataURL});
+        // Plotly.toImage('plot1', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
+        //     imgs.push({title:'Graph Layout 1',image:dataURL});
+
+        //     doc.text('Layout 1',20, 35);
+        //     doc.addImage(dataURL,'JPEG',20,50,200,160);
+        //     console.log(dataURL)
+
+        //     Plotly.toImage('plot2', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
+        //         imgs.push({title:'Graph Layout 2',image:dataURL});
                
-               var pageHeight= doc.internal.pageSize.height;
-                var y = 500 // Height position of new content
-                if (y >= pageHeight)
-                {
-                    doc.addPage();
-                    y = 0 // Restart height position
-                }
+        //        var pageHeight= doc.internal.pageSize.height;
+        //         var y = 500 // Height position of new content
+        //         if (y >= pageHeight)
+        //         {
+        //             doc.addPage();
+        //             y = 0 // Restart height position
+        //         }
                
-                doc.text('Layout 2',20, 35);
-            doc.addImage(dataURL,'JPEG',20,50,200,160);
-                console.log(dataURL)
+        //         doc.text('Layout 2',20, 35);
+        //     doc.addImage(dataURL,'JPEG',20,50,200,160);
+        //         console.log(dataURL)
 
-               Plotly.toImage('plot3', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
-                    imgs.push({title:'Graph Layout 3',image:dataURL});
+        //        Plotly.toImage('plot3', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
+        //             imgs.push({title:'Graph Layout 3',image:dataURL});
 
-                   var pageHeight= doc.internal.pageSize.height;
-                    var y = 500 // Height position of new content
-                    if (y >= pageHeight)
-                    {
-                        doc.addPage();
-                        y = 0 // Restart height position
-                    }
+        //            var pageHeight= doc.internal.pageSize.height;
+        //             var y = 500 // Height position of new content
+        //             if (y >= pageHeight)
+        //             {
+        //                 doc.addPage();
+        //                 y = 0 // Restart height position
+        //             }
 
-                    doc.text('Layout 3',20, 35);
-            doc.addImage(dataURL,'JPEG',20,50,200,160);
-                    console.log(dataURL)
+        //             doc.text('Layout 3',20, 35);
+        //     doc.addImage(dataURL,'JPEG',20,50,200,160);
+        //             console.log(dataURL)
 
-                    if(imgs.length === 3){
-                        doc.save("testing.pdf");
-                    }
-                });
+        //             if(imgs.length === 3){
+        //                 doc.save("testing.pdf");
+        //             }
+        //         });
 
-            });
+        //     });
 
 
-        });
+        // });
 
 
        // setImage(imgs);
@@ -608,10 +633,46 @@ const showMap3 = () => {
      }
 }
 
+const addImageToArray1 = () =>{
+    const enteredName = prompt('Please enter your graph title');
+    if(enteredName){
+        Plotly.toImage('plot1', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
+            //arr.push({title:enteredName,image:dataURL});
+            setImages1([...images1,{title:enteredName,image:dataURL}])
+        });
+    }
+    else{
+        alert("Title is required")
+    }
+
+    console.log(images1,'images')
+}
+const addImageToArray2 = () =>{
+     const enteredName = prompt('Please enter your graph title');
+    if(enteredName){
+        Plotly.toImage('plot2', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
+            setImages2([...images1,{title:enteredName,image:dataURL}])
+        });
+    }
+    else{
+        alert("Title is required")
+    }
+}
+const addImageToArray3 = () =>{
+    const enteredName = prompt('Please enter your graph title');
+    if(enteredName){
+        Plotly.toImage('plot3', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
+            setImages2([...images3,{title:enteredName,image:dataURL}])
+        });
+    }
+    else{
+        alert("Title is required")
+    }
+}
+
+
 	return(
 		<>
-
-    
 
 		<div>
             <div className='row'>
@@ -628,6 +689,8 @@ const showMap3 = () => {
                     <input type="number" className="maxval1 form-control" placeholder="Max Value" onChange={e => setMax1(e.target.value) } />
                     <button className="btn btn-info show1" onClick={() => showMap1()} type="button ">Show</button>
                     <button className="btn btn-dark reset" onClick={() => reset1()} type="button ">Reset</button>
+                    <button className="btn btn-dark reset" onClick={() => addImageToArray1()} type="button ">Add Image to PDF</button>
+
                 
                 </div>
             </div>
@@ -644,7 +707,8 @@ const showMap3 = () => {
                     <input type="number" className="maxval1 form-control" placeholder="Max Value" onChange={e => setMax2(e.target.value) } />
                     <button className="btn btn-info show1" onClick={() => showMap2()} type="button ">Show</button>
                     <button className="btn btn-dark reset" onClick={() => reset2()} type="button ">Reset</button>
-                
+                    <button className="btn btn-dark reset" onClick={() => addImageToArray2()} type="button ">Add Image to PDF</button>
+
                 </div>
             </div>  
             <div className='row'>
@@ -661,13 +725,28 @@ const showMap3 = () => {
                     <input type="number" className="maxval1 form-control" placeholder="Max Value" onChange={e => setMax3(e.target.value) } />
                     <button className="btn btn-info show1" onClick={() => showMap3()} type="button ">Show</button>
                     <button className="btn btn-dark reset" onClick={() => reset3()} type="button ">Reset</button>
-                
+                    <button className="btn btn-dark reset" onClick={() => addImageToArray3()} type="button ">Add Image to PDF</button>
+
                 </div>
             </div>  
 
             <div id="graph" style={{ display: "none" }}></div>
             
         </div>
+        {images1 && images1.length ? (
+        <div className="row">
+            {images1.map((item,key) => (
+                <div className="col-md-3">
+                    <h4>{item.title}</h4>
+                    <img src={item.image} style={{width:100,height:100}}/>
+                </div>
+            ))}
+           
+        </div>
+        ):
+        (
+        <></>
+        )}
       	<div className='d-flex mt-3 mb-3 text-right align-right justify-content-end'>
            
             <button className='btn btn-primary' onClick={() => downlaoadimg()}> Download Pdf</button> 

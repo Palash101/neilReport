@@ -3,30 +3,22 @@ import * as Plotly from 'plotly.js';
 import { jsPDF,HTMLOptionImage } from "jspdf";
 
 import {useEffect,useState} from 'react';
+import { array } from 'prop-types';
 
 function GraphComponent(props){
 	const [allData,setAllData] = useState(props.data[0]);
     const [Data1,setData1] = useState([]);
     const [Data2,setData2] = useState([]);
-    const [Data3,setData3] = useState([]);
     const [Layout1,setLayout1] = useState();
     const [Layout2,setLayout2] = useState();
-    const [Layout3,setLayout3] = useState();
+
+    const [GData,setGData] = useState({});
 
     const [min,setMin1] = useState();
     const [max,setMax1] = useState();
 
     const [min2,setMin2] = useState();
     const [max2,setMax2] = useState();
-
-    const [min3,setMin3] = useState();
-    const [max3,setMax3] = useState();
-
-
-    const [images1,setImages1] = useState([]);
-    const [images2,setImages2] = useState([]);
-    const [images3,setImages3] = useState([]);
-
 
 
 // left
@@ -94,8 +86,81 @@ useEffect(()=>{
 },[])
 
 
+const createLayout1 = (var1,var2) => {
+    var D1 = Data1;
+    var D11 = [];
+  
+    D1.map((item,key) => {
+        if(key === var1 || key === var2){
+            item.visible = "none";
+        }
+        else{
+            item.visible = "legendonly"; 
+        }
+        D11.push(item)
+    })
 
-const downlaoadimg = ()=>{
+    setData1(D11);
+    return Plotly.toImage('plot1', { format: 'png', width: 600, height: 300 }).then(function (dataURL) {
+        return dataURL;
+    });
+
+}
+const createLayout2 = (var1,var2) => {
+    var D1 = Data2;
+    var D11 = [];
+  
+    D1.map((item,key) => {
+        if(key === var1 || key === var2){
+            item.visible = "none";
+        }
+        else{
+            item.visible = "legendonly"; 
+        }
+        D11.push(item)
+    })
+
+    setData2(D11);
+    return Plotly.toImage('plot2', { format: 'png', width: 600, height: 300 }).then(function (dataURL) {
+        return dataURL;
+    });
+
+}
+
+
+const downlaoadimg1 = async() => {
+    props.setLoading(true)
+   var img1 = await createLayout1(4,6);
+   var img2 = await createLayout1(5,7);
+   var img3 = await createLayout1(0,2);
+   var img4 = await createLayout1(1,3);
+
+   var img5 = await createLayout2(0,2);
+   var img6 = await createLayout2(1,3);
+   var img7 = await createLayout2(6,9);
+   var img8 = await createLayout2(7,9);
+   var img9 = await createLayout2(4,9);
+   var img10 = await createLayout2(5,9);
+    var imgs = {
+        img1:img1,
+        img2:img2,
+        img3:img3,
+        img4:img4,
+        img5:img5,
+        img6:img6,
+        img7:img7,
+        img8:img8,
+        img9:img9,
+        img10:img10,
+    };
+
+   setGData(imgs);
+   downlaoadimg(imgs)
+   
+}
+
+
+const downlaoadimg = (imgs)=>{
         const doc  = new jsPDF();
     doc.setFont("centred", "normal");
     doc.setFontSize(11);
@@ -199,12 +264,15 @@ const downlaoadimg = ()=>{
 
     doc.text("Angulaciones de flexo-extensión pie izquierdo:", 20, 48);
 
-        images1.map((item) => {
-            doc.text(item.title,20,35);
-            doc.addImage(item.image,'JPEG',20,50,200,160);
-            doc.addPage();
-        })
-
+     
+    doc.addImage(imgs.img1,'JPEG',0,50,200,160);
+    doc.addPage();
+    doc.addImage(imgs.img2,'JPEG',0,50,200,160);
+    doc.addPage();
+    doc.addImage(imgs.img3,'JPEG',0,50,200,160);
+    doc.addPage();
+    doc.addImage(imgs.img4,'JPEG',0,50,200,160);
+    doc.addPage();
 
     doc.addPage();
 
@@ -214,11 +282,16 @@ const downlaoadimg = ()=>{
     doc.setLineWidth(0.60);
     doc.line(20, 33, 180, 33);
 
-     images2.map((item) => {
-            doc.text(item.title,20,35);
-            doc.addImage(item.image,'JPEG',20,50,200,160);
-            doc.addPage();
-        })
+  
+
+    doc.addImage(imgs.img5,'JPEG',0,50,200,160);
+    doc.addPage();
+    doc.addImage(imgs.img6,'JPEG',0,50,200,160);
+    doc.addPage();
+    doc.addImage(imgs.img7,'JPEG',0,50,200,160);
+    doc.addPage();
+    doc.addImage(imgs.img8,'JPEG',0,50,200,160);
+    
 
     doc.addPage();
 
@@ -227,12 +300,12 @@ const downlaoadimg = ()=>{
     doc.text("Observación clínica", 20, 30);
     doc.setLineWidth(0.60);
     doc.line(20, 33, 180, 33);
-    images3.map((item) => {
-            doc.text(item.title,20,35);
-            doc.addImage(item.image,'JPEG',20,50,200,160);
-            doc.addPage();
-        })
+   
 
+    doc.addImage(imgs.img9,'JPEG',20,50,200,160);
+    doc.addPage();
+    doc.addImage(imgs.img10,'JPEG',20,50,200,160);
+ 
 
     doc.addPage();
 
@@ -243,9 +316,10 @@ const downlaoadimg = ()=>{
    doc.line(20, 33, 180, 33);
 
    doc.text("Presiones promedio", 20, 120);
-   doc.addImage("./images/l3.png", "png", 50, 122, 80, 80);
+
+   doc.addImage("./images/"+props.leftLeg, "png", 45, 122, 80, 80);
    
-   doc.addImage("./images/r4.png", "png", 100, 122, 80, 80);
+   doc.addImage("./images/"+props.rightLeg, "png", 95, 122, 80, 80);
    
 
    doc.addPage();
@@ -255,7 +329,7 @@ const downlaoadimg = ()=>{
   doc.text("Observación clínica", 20, 30);
   doc.setLineWidth(0.60);
   doc.line(20, 33, 180, 33);
-
+  doc.text(props.diagnosticText, 14, 60);
   doc.addPage();
 
   doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
@@ -263,12 +337,11 @@ const downlaoadimg = ()=>{
  doc.text("Observación clínica", 20, 30);
  doc.setLineWidth(0.60);
  doc.line(20, 33, 180, 33);
+ doc.text(props.recomendText, 14, 60);
 
-
-       
         
 doc.save("observation.pdf");
-    
+props.setLoading(false)
 }
 
 const setGraphData = (data) => {
@@ -331,14 +404,14 @@ const setGraphData = (data) => {
 
     }
 
-     trace1 = {x: l_timeStamp2,y: l_degreesR,type: 'scatter',mode: 'markers+text',name: 'Supinación (izq)',marker: { size: 8 }};
-     trace2 = {x: r_timeStamp2,y: r_degreesL,type: 'scatter',mode: 'markers+text',name: 'Supinación (dch)',marker: { size: 8 }};
-     trace3 = {x: l_timeStamp2,y: l_degreesL,type: 'scatter',mode: 'markers+text',name: 'Pronación (izq)',marker: { size: 8 }};
-     trace4 = {x: r_timeStamp2,y: r_degreesR, type: 'scatter',mode: 'markers+text',name: 'Pronación (dch)',marker: { size: 8,color:'LightSkyBlue' }};
-     trace5 = {x: l_timeStamp2,y: l_degreeF,type: 'scatter',mode: 'markers+text',name: 'Flexión Plantar (izq)',marker: { size: 8 }};
-     trace6 = {x: r_timeStamp2,y: r_degreeF,type: 'scatter',mode: 'markers+text',name: 'Flexión Plantar (dch)',marker: { size: 8,color:'MediumPurple' }};
-     trace7 = {x: l_timeStamp2,y: l_degreeH,type: 'scatter',mode: 'markers+text',name: 'Flexión Dorsal (izq)',marker: { size: 8 }};
-     trace8 = {x: r_timeStamp2,y: r_degreeH, type: 'scatter',mode: 'markers+text',name: 'Flexión Dorsal (dch)',marker: { size: 8 }};
+     trace1 = {x: l_timeStamp2,y: l_degreesR,type: 'scatter',mode: 'markers+text',name: 'Supinación (izq)',marker: { size: 8 },visible:'none'};
+     trace2 = {x: r_timeStamp2,y: r_degreesL,type: 'scatter',mode: 'markers+text',name: 'Supinación (dch)',marker: { size: 8 },visible:'none'};
+     trace3 = {x: l_timeStamp2,y: l_degreesL,type: 'scatter',mode: 'markers+text',name: 'Pronación (izq)',marker: { size: 8 },visible:'none'};
+     trace4 = {x: r_timeStamp2,y: r_degreesR, type: 'scatter',mode: 'markers+text',name: 'Pronación (dch)',marker: { size: 8,color:'LightSkyBlue' },visible:'none'};
+     trace5 = {x: l_timeStamp2,y: l_degreeF,type: 'scatter',mode: 'markers+text',name: 'Flexión Plantar (izq)',marker: { size: 8 },visible:'none'};
+     trace6 = {x: r_timeStamp2,y: r_degreeF,type: 'scatter',mode: 'markers+text',name: 'Flexión Plantar (dch)',marker: { size: 8,color:'MediumPurple' },visible:'none'};
+     trace7 = {x: l_timeStamp2,y: l_degreeH,type: 'scatter',mode: 'markers+text',name: 'Flexión Dorsal (izq)',marker: { size: 8 },visible:'none'};
+     trace8 = {x: r_timeStamp2,y: r_degreeH, type: 'scatter',mode: 'markers+text',name: 'Flexión Dorsal (dch)',marker: { size: 8 },visible:'none'};
      graphData1 = [trace1, trace2, trace3, trace4,trace5,trace6,trace7,trace8];
      layout1 = {
      title:'Angulaciones',
@@ -358,13 +431,18 @@ const setGraphData = (data) => {
     setData1(graphData1);
 
         // Graph 2
-    var strace1 = {x: l_timeStamp1,y: l_height,type: 'scatter',mode: 'lines+markers',name: 'Altura (izq)',marker: { size: 8 }};
-    var strace2 = {x: r_timeStamp1,y: r_height,type: 'scatter',mode: 'lines+markers',name: 'Altura (dch)',marker: { size: 8 }};
-    var strace3 = {x: l_timeStamp1,y: l_length,type: 'scatter',mode: 'lines+markers',name: 'Longitud (izq)',marker: { size: 8 }};
-    var strace4 = {x: r_timeStamp1,y: r_length, type: 'scatter',mode: 'lines+markers',name: 'Longitud (dch)',marker: { size: 8,color:'LightSkyBlue' }};
+   var strace1 = {x: l_timeStamp1,y: l_flytime,type: 'scatter',mode: 'lines',name: 'Tiempo vuelo (izq)',visible:'none'};
+   var strace2 = {x: r_timeStamp1,y: r_flytime,type: 'scatter',mode: 'lines',name: 'Tiempo vuelo (dch)',visible:'none'};
+   var strace3 = {x: l_timeStamp1,y: l_stancetime,type: 'scatter',mode: 'lines',name: 'Tiempo apoyo (izq)',visible:'none'};
+   var strace4 = {x: r_timeStamp1,y: r_stancetime, type: 'scatter',mode: 'lines',name: 'Tiempo apoyo (dch)',visible:'none'};
+
+    var strace5 = {x: l_timeStamp1,y: l_height,type: 'scatter',mode: 'lines+markers',name: 'Altura (izq)',marker: { size: 8 },visible:'none'};
+    var strace6 = {x: r_timeStamp1,y: r_height,type: 'scatter',mode: 'lines+markers',name: 'Altura (dch)',marker: { size: 8 },visible:'none'};
+    var strace7 = {x: l_timeStamp1,y: l_length,type: 'scatter',mode: 'lines+markers',name: 'Longitud (izq)',marker: { size: 8 },visible:'none'};
+    var strace8 = {x: r_timeStamp1,y: r_length, type: 'scatter',mode: 'lines+markers',name: 'Longitud (dch)',marker: { size: 8,color:'LightSkyBlue' },visible:'none'};
 
 
-    var graphData2 = [strace1, strace2, strace3, strace4];
+  var graphData2 = [strace1, strace2, strace3, strace4, strace5, strace6, strace7, strace8];
    layout2 = {
      title:'Zancada',
      xaxis:{
@@ -381,33 +459,9 @@ const setGraphData = (data) => {
 
     setLayout2(layout2);
     setData2(graphData2);
-   //Graph 3 Flytime
 
-   var graph1 = {x: l_timeStamp1,y: l_flytime,type: 'scatter',mode: 'lines',name: 'Tiempo vuelo (izq)'};
-   var graph2 = {x: r_timeStamp1,y: r_flytime,type: 'scatter',mode: 'lines',name: 'Tiempo vuelo (dch)'};
-   var graph3 = {x: l_timeStamp1,y: l_stancetime,type: 'scatter',mode: 'lines',name: 'Tiempo apoyo (izq)'};
-   var graph4 = {x: r_timeStamp1,y: r_stancetime, type: 'scatter',mode: 'lines',name: 'Tiempo apoyo (dch)'};
-
-
-   var graphData3 = [graph1, graph2, graph3, graph4];
-   var layout3 = {
-    title:'Zancada flytime',
-    xaxis:{
-       title:{
-           text:'Tiempo (s)'
-       }
-    },
-    yaxis:{
-       title:{
-           text:'Tiempo de fase (ms)'
-       }
-    },
-   };
-   setLayout3(layout3);
-    setData3(graphData3);
 
     props.setLoading(false)
-  //  downlaoadimg();
 }
 
 const setGraphData1 = (data) => {
@@ -470,14 +524,14 @@ const setGraphData1 = (data) => {
 
     }
 
-     trace1 = {x: l_timeStamp2,y: l_degreesR,type: 'scatter',mode: 'markers+text',name: 'Supinación (izq)',marker: { size: 8 }};
-     trace2 = {x: r_timeStamp2,y: r_degreesL,type: 'scatter',mode: 'markers+text',name: 'Supinación (dch)',marker: { size: 8 }};
-     trace3 = {x: l_timeStamp2,y: l_degreesL,type: 'scatter',mode: 'markers+text',name: 'Pronación (izq)',marker: { size: 8 }};
-     trace4 = {x: r_timeStamp2,y: r_degreesR, type: 'scatter',mode: 'markers+text',name: 'Pronación (dch)',marker: { size: 8,color:'LightSkyBlue' }};
-     trace5 = {x: l_timeStamp2,y: l_degreeF,type: 'scatter',mode: 'markers+text',name: 'Flexión Plantar (izq)',marker: { size: 8 }};
-     trace6 = {x: r_timeStamp2,y: r_degreeF,type: 'scatter',mode: 'markers+text',name: 'Flexión Plantar (dch)',marker: { size: 8,color:'MediumPurple' }};
-     trace7 = {x: l_timeStamp2,y: l_degreeH,type: 'scatter',mode: 'markers+text',name: 'Flexión Dorsal (izq)',marker: { size: 8 }};
-     trace8 = {x: r_timeStamp2,y: r_degreeH, type: 'scatter',mode: 'markers+text',name: 'Flexión Dorsal (dch)',marker: { size: 8 }};
+    trace1 = {x: l_timeStamp2,y: l_degreesR,type: 'scatter',mode: 'markers+text',name: 'Supinación (izq)',marker: { size: 8 },visible:'none'};
+     trace2 = {x: r_timeStamp2,y: r_degreesL,type: 'scatter',mode: 'markers+text',name: 'Supinación (dch)',marker: { size: 8 },visible:'none'};
+     trace3 = {x: l_timeStamp2,y: l_degreesL,type: 'scatter',mode: 'markers+text',name: 'Pronación (izq)',marker: { size: 8 },visible:'none'};
+     trace4 = {x: r_timeStamp2,y: r_degreesR, type: 'scatter',mode: 'markers+text',name: 'Pronación (dch)',marker: { size: 8,color:'LightSkyBlue' },visible:'none'};
+     trace5 = {x: l_timeStamp2,y: l_degreeF,type: 'scatter',mode: 'markers+text',name: 'Flexión Plantar (izq)',marker: { size: 8 },visible:'none'};
+     trace6 = {x: r_timeStamp2,y: r_degreeF,type: 'scatter',mode: 'markers+text',name: 'Flexión Plantar (dch)',marker: { size: 8,color:'MediumPurple' },visible:'none'};
+     trace7 = {x: l_timeStamp2,y: l_degreeH,type: 'scatter',mode: 'markers+text',name: 'Flexión Dorsal (izq)',marker: { size: 8 },visible:'none'};
+     trace8 = {x: r_timeStamp2,y: r_degreeH, type: 'scatter',mode: 'markers+text',name: 'Flexión Dorsal (dch)',marker: { size: 8 },visible:'none'};
      graphData1 = [trace1, trace2, trace3, trace4,trace5,trace6,trace7,trace8];
      layout1 = {
      title:'Angulaciones',
@@ -558,13 +612,19 @@ const setGraphData2 = (data) => {
     }
 
 
-    var strace1 = {x: l_timeStamp1,y: l_height,type: 'scatter',mode: 'lines+markers',name: 'Altura (izq)',marker: { size: 8 }};
-    var strace2 = {x: r_timeStamp1,y: r_height,type: 'scatter',mode: 'lines+markers',name: 'Altura (dch)',marker: { size: 8 }};
-    var strace3 = {x: l_timeStamp1,y: l_length,type: 'scatter',mode: 'lines+markers',name: 'Longitud (izq)',marker: { size: 8 }};
-    var strace4 = {x: r_timeStamp1,y: r_length, type: 'scatter',mode: 'lines+markers',name: 'Longitud (dch)',marker: { size: 8,color:'LightSkyBlue' }};
+    var strace1 = {x: l_timeStamp1,y: l_flytime,type: 'scatter',mode: 'lines',name: 'Tiempo vuelo (izq)',visible:'none'};
+   var strace2 = {x: r_timeStamp1,y: r_flytime,type: 'scatter',mode: 'lines',name: 'Tiempo vuelo (dch)',visible:'none'};
+   var strace3 = {x: l_timeStamp1,y: l_stancetime,type: 'scatter',mode: 'lines',name: 'Tiempo apoyo (izq)',visible:'none'};
+   var strace4 = {x: r_timeStamp1,y: r_stancetime, type: 'scatter',mode: 'lines',name: 'Tiempo apoyo (dch)',visible:'none'};
+
+    var strace5 = {x: l_timeStamp1,y: l_height,type: 'scatter',mode: 'lines+markers',name: 'Altura (izq)',marker: { size: 8 },visible:'none'};
+    var strace6 = {x: r_timeStamp1,y: r_height,type: 'scatter',mode: 'lines+markers',name: 'Altura (dch)',marker: { size: 8 },visible:'none'};
+    var strace7 = {x: l_timeStamp1,y: l_length,type: 'scatter',mode: 'lines+markers',name: 'Longitud (izq)',marker: { size: 8 },visible:'none'};
+    var strace8 = {x: r_timeStamp1,y: r_length, type: 'scatter',mode: 'lines+markers',name: 'Longitud (dch)',marker: { size: 8,color:'LightSkyBlue' },visible:'none'};
 
 
-    var graphData2 = [strace1, strace2, strace3, strace4];
+  var graphData2 = [strace1, strace2, strace3, strace4, strace5, strace6, strace7, strace8];
+   
    layout2 = {
      title:'Zancada',
      xaxis:{
@@ -679,8 +739,6 @@ const reset3 = () => {
 }
 
 const showMap1 = () => {
-  
-
     var NewData = [];
     if(min && max){
      for(let i =0 ;i< allData.length; i++){
@@ -691,12 +749,10 @@ const showMap1 = () => {
       }
       console.log(NewData,'NewData')
       setGraphData1(NewData)
-
      }
      else{
          alert("please enter minimum and maximum value.")
      }
-
 }
 
 const showMap2 = () => {
@@ -713,59 +769,6 @@ const showMap2 = () => {
      else{
          alert("please enter minimum and maximum value.")
      }
-}
-
-const showMap3 = () => {
-    var NewData = [];
-    if(min3 && max3){
-     for(let i =0 ;i< allData.length; i++){
-         const time_stamp = allData[i].ts;
-         if(time_stamp >= min3 && time_stamp <= max3){
-             NewData.push(allData[i]);
-         }
-      }
-      setGraphData3(NewData)
-     }
-     else{
-         alert("please enter minimum and maximum value.")
-     }
-}
-
-const addImageToArray1 = () =>{
-    const enteredName = prompt('Please enter your graph title');
-    if(enteredName){
-        Plotly.toImage('plot1', { format: 'png', width: 400, height: 400 }).then(function (dataURL) {
-            //arr.push({title:enteredName,image:dataURL});
-            setImages1([...images1,{title:enteredName,image:dataURL}])
-        });
-    }
-    else{
-        alert("Title is required")
-    }
-
-    console.log(images1,'images')
-}
-const addImageToArray2 = () =>{
-     const enteredName = prompt('Please enter your graph title');
-    if(enteredName){
-        Plotly.toImage('plot2', { format: 'png', width: 400, height: 400 }).then(function (dataURL) {
-            setImages2([...images1,{title:enteredName,image:dataURL}])
-        });
-    }
-    else{
-        alert("Title is required")
-    }
-}
-const addImageToArray3 = () =>{
-    const enteredName = prompt('Please enter your graph title');
-    if(enteredName){
-        Plotly.toImage('plot3', { format: 'png', width: 400, height: 400 }).then(function (dataURL) {
-            setImages2([...images3,{title:enteredName,image:dataURL}])
-        });
-    }
-    else{
-        alert("Title is required")
-    }
 }
 
 
@@ -787,7 +790,6 @@ const addImageToArray3 = () =>{
                     <input type="number" className="maxval1 form-control" placeholder="Max Value" onChange={e => setMax1(e.target.value) } />
                     <button className="btn btn-info show1" onClick={() => showMap1()} type="button ">Show</button>
                     <button className="btn btn-dark reset" onClick={() => reset1()} type="button ">Reset</button>
-                    <button className="btn btn-dark reset" onClick={() => addImageToArray1()} type="button ">Add Image to PDF</button>
 
                 
                 </div>
@@ -805,49 +807,16 @@ const addImageToArray3 = () =>{
                     <input type="number" className="maxval1 form-control" placeholder="Max Value" onChange={e => setMax2(e.target.value) } />
                     <button className="btn btn-info show1" onClick={() => showMap2()} type="button ">Show</button>
                     <button className="btn btn-dark reset" onClick={() => reset2()} type="button ">Reset</button>
-                    <button className="btn btn-dark reset" onClick={() => addImageToArray2()} type="button ">Add Image to PDF</button>
 
                 </div>
             </div>  
-            <div className='row'>
-            <Plot
-            data={Data3}
-            layout={Layout3}
-            divId='plot3'
-            />
-            </div>
-
-            <div class="row maps">
-                    <div class="input-group map1 m-2" style={{maxWidth:'500px'}}>
-                    <input type="number" className="minval1 form-control " placeholder="Min Value" onChange={e => setMin3(e.target.value) } />
-                    <input type="number" className="maxval1 form-control" placeholder="Max Value" onChange={e => setMax3(e.target.value) } />
-                    <button className="btn btn-info show1" onClick={() => showMap3()} type="button ">Show</button>
-                    <button className="btn btn-dark reset" onClick={() => reset3()} type="button ">Reset</button>
-                    <button className="btn btn-dark reset" onClick={() => addImageToArray3()} type="button ">Add Image to PDF</button>
-
-                </div>
-            </div>  
-
-            <div id="graph" style={{ display: "none" }}></div>
+          
             
         </div>
-        {images1 && images1.length ? (
-        <div className="row">
-            {images1.map((item,key) => (
-                <div className="col-md-3">
-                    <h4>{item.title}</h4>
-                    <img src={item.image} style={{width:100,height:100}}/>
-                </div>
-            ))}
+     
+      	<div className='d-flex bottomButton'>
            
-        </div>
-        ):
-        (
-        <></>
-        )}
-      	<div className='d-flex mt-3 mb-3 text-right align-right justify-content-end'>
-           
-            <button className='btn btn-primary' onClick={() => downlaoadimg()}> Download Pdf</button> 
+            <button className='btn btn-primary' onClick={() => downlaoadimg1()}> Download Pdf</button> 
       	</div>
 
 		</>

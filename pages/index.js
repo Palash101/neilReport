@@ -349,7 +349,14 @@ const [recomendText,setRecomendText] = useState('');
         graphData && graphData.length ?
         ( <>
         
-          <GraphComponent setLoading={setLoading} data={graphData} />
+          <GraphComponent 
+            setLoading={setLoading} 
+            leftLeg={leftLeg} 
+            rightLeg={rightLeg} 
+            diagnosticText={diagnosticText} 
+            recomendText={recomendText} 
+            data={graphData} 
+          />
 
        <div className="form-group">
        </div>
@@ -358,27 +365,27 @@ const [recomendText,setRecomendText] = useState('');
         <label>Select one left leg</label>
          <div className="form-group">
             <label className="leg" for="leg1">
-                <input type="radio" value="leg1" id="leg1" name="leftLeg" onChange={(e) =>  setLeftLeg(e.target.value)} />
+                <input type="radio" value="l1.png" id="leg1" name="leftLeg" onChange={(e) =>  setLeftLeg(e.target.value)} />
                 <img src="./images/l1.png"/>
             </label>
            <label className="leg" for="leg2">
-                <input type="radio" value="leg2" id="leg2" name="leftLeg" onChange={(e) =>  setLeftLeg(e.target.value)} />
+                <input type="radio" value="l2.png" id="leg2" name="leftLeg" onChange={(e) =>  setLeftLeg(e.target.value)} />
                 <img src="./images/l2.png"/>
             </label>
             <label className="leg" for="leg3">
-                <input type="radio" value="leg3" id="leg3" name="leftLeg" onChange={(e) =>  setLeftLeg(e.target.value)} />
+                <input type="radio" value="l3.png" id="leg3" name="leftLeg" onChange={(e) =>  setLeftLeg(e.target.value)} />
                 <img src="./images/l3.png"/>
             </label>
             <label className="leg" for="leg4">
-                <input type="radio" value="leg4" id="leg4" name="leftLeg" onChange={(e) =>  setLeftLeg(e.target.value)} />
+                <input type="radio" value="l4.png" id="leg4" name="leftLeg" onChange={(e) =>  setLeftLeg(e.target.value)} />
                 <img src="./images/l4.png"/>
             </label>
             <label className="leg" for="leg5">
-                <input type="radio" value="leg5" id="leg5" name="leftLeg" onChange={(e) =>  setLeftLeg(e.target.value)} />
+                <input type="radio" value="l5.png" id="leg5" name="leftLeg" onChange={(e) =>  setLeftLeg(e.target.value)} />
                 <img src="./images/l5.png"/>
             </label>
             <label className="leg" for="leg6">
-                <input type="radio" value="leg5" id="leg6" name="leftLeg" onChange={(e) =>  setLeftLeg(e.target.value)} />
+                <input type="radio" value="l6.png" id="leg6" name="leftLeg" onChange={(e) =>  setLeftLeg(e.target.value)} />
                 <img src="./images/l6.png"/>
             </label>
          </div>
@@ -388,27 +395,27 @@ const [recomendText,setRecomendText] = useState('');
         <label>Select one right leg</label>
          <div className="form-group">
             <label className="leg" for="rleg1">
-                <input type="radio" value="rightLeg1" id="rleg1" name="rightLeg" onChange={(e) =>  setRightLeg(e.target.value)} />
+                <input type="radio" value="r1.png" id="rleg1" name="rightLeg" onChange={(e) =>  setRightLeg(e.target.value)} />
                 <img src="./images/r1.png"/>
             </label>
            <label className="leg" for="rleg2">
-                <input type="radio" value="rightLeg2" id="rleg2" name="rightLeg" onChange={(e) =>  setRightLeg(e.target.value)} />
+                <input type="radio" value="r2.png" id="rleg2" name="rightLeg" onChange={(e) =>  setRightLeg(e.target.value)} />
                 <img src="./images/r2.png"/>
             </label>
             <label className="leg" for="rleg3">
-                <input type="radio" value="rightLeg3" id="rleg3" name="rightLeg" onChange={(e) =>  setRightLeg(e.target.value)} />
+                <input type="radio" value="r3.png" id="rleg3" name="rightLeg" onChange={(e) =>  setRightLeg(e.target.value)} />
                 <img src="./images/r3.png"/>
             </label>
             <label className="leg" for="rleg4">
-                <input type="radio" value="rightLeg4" id="rleg4" name="rightLeg" onChange={(e) =>  setRightLeg(e.target.value)} />
+                <input type="radio" value="r4.png" id="rleg4" name="rightLeg" onChange={(e) =>  setRightLeg(e.target.value)} />
                 <img src="./images/r4.png"/>
             </label>
             <label className="leg" for="rleg5">
-                <input type="radio" value="rightLeg5" id="rleg5" name="rightLeg" onChange={(e) =>  setRightLeg(e.target.value)} />
+                <input type="radio" value="r5.png" id="rleg5" name="rightLeg" onChange={(e) =>  setRightLeg(e.target.value)} />
                 <img src="./images/r5.png"/>
             </label>
             <label className="leg" for="rleg6">
-                <input type="radio" value="rightLeg5" id="rleg6" name="rightLeg" onChange={(e) =>  setRightLeg(e.target.value)} />
+                <input type="radio" value="r6.png" id="rleg6" name="rightLeg" onChange={(e) =>  setRightLeg(e.target.value)} />
                 <img src="./images/r6.png"/>
             </label>
          </div>
@@ -416,12 +423,12 @@ const [recomendText,setRecomendText] = useState('');
 
       <div className="form-group">
             <label for="Diagnóstico">Diagnóstico</label>
-            <textarea onChange={e=>setDiagnosticText(e.default.value)} className="form-control" rows="3"></textarea>
+            <textarea onChange={e=>setDiagnosticText(e.target.value)} className="form-control" rows="3"></textarea>
          </div>
 
-         <div className="form-group">
+         <div className="form-group mb-5 pb-5">
             <label for="Diagnóstico">Recomendación de tratamiento</label>
-            <textarea onChange={e=>setRecomendText(e.default.value)} className="form-control" rows="3"></textarea>
+            <textarea onChange={e=>setRecomendText(e.target.value)} className="form-control" rows="3"></textarea>
          </div>
 
          
@@ -433,7 +440,7 @@ const [recomendText,setRecomendText] = useState('');
     }
       </div>
       {loading === true && (
-      <div class="text-center">
+      <div class="text-center loader">
         <div class="spinner-border text-primary" role="status">
         </div>
         <div className='display-block text-primary'>Please Wait...</div>

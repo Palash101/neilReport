@@ -14,6 +14,7 @@ function GraphComponent(props){
 
     const [GData,setGData] = useState({});
 
+
     const [min,setMin1] = useState();
     const [max,setMax1] = useState();
 
@@ -129,7 +130,7 @@ const createLayout2 = (var1,var2) => {
 
 
 const downlaoadimg1 = async() => {
-    props.setLoading(true)
+     props.setLoading(true)
    var img1 = await createLayout1(4,6);
    var img2 = await createLayout1(5,7);
    var img3 = await createLayout1(0,2);
@@ -161,120 +162,130 @@ const downlaoadimg1 = async() => {
 
 
 const downlaoadimg = (imgs)=>{
-        const doc  = new jsPDF();
-    doc.setFont("centred", "normal");
-    doc.setFontSize(11);
-    doc.text("Paciente: Marcos", 20, 30, null, null,);
-
-    doc.setFontSize(11);
-    
-    doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
-
-    doc.setFontSize(11);
-    doc.text("Fecha de la visita: 24-05-2022", 20, 40, null, null,);
-
-    doc.setFontSize(11);
-    doc.text("Hora: 08:56", 100, 40, null, null,);
-    
-
-    doc.setFontSize(11);
-    // doc.setFont("paciente", "bold");
-    doc.text("Antecedentes del paciente", 20, 60);
-    doc.setLineWidth(0.60);
-    doc.line(20, 62, 180, 62);
-    
-    doc.setFontSize(11);
-    doc.text("Edad", 20, 70);
-
-    doc.setFontSize(11);
-    doc.text("40", 40, 70);
-
-    doc.setFontSize(11);
-    doc.text("Sexo", 20, 75);
-
-    doc.setFontSize(11);
-    doc.text("Hombre", 40, 75);
-
-    doc.setFontSize(11);
-    doc.text("Trabajo", 20, 80);
-
-    doc.setFontSize(11);
-    doc.text("Comercial", 40, 80);
-
-
-    doc.setFontSize(11);
-    doc.text("Peso", 120, 70);
-
-    doc.setFontSize(11);
-    doc.text("82", 140, 70);
-
-    doc.setFontSize(11);
-    doc.text("Altura", 120, 75);
-
-    doc.setFontSize(11);
-    doc.text("180", 140, 75);
-
-    doc.setFontSize(11);
-    doc.text("Hobby", 120, 80);
-
-    doc.setFontSize(11);
-    doc.text("Natación", 140, 80);
-
-    doc.text("¿Dónde tiene el dolor?", 20, 100);
-
-    doc.text("Rodilla izquierda por el lado interior y parte trasera", 23, 110);
-    doc.setLineWidth(0.1);
-    doc.rect(20, 105, 165, 25);
-
-    doc.text("¿Qué tipo de dolor?", 20, 140);
-
-     doc.text("Pinchazos en el ligamento, al sobrecargarse", 23, 150);
-    doc.setLineWidth(0.1);
-    doc.rect(20, 145, 165, 25);
-
-    doc.text("¿En qué situaciones le duele?", 20, 180);
-    
-    doc.text("Cuando se levanta de la silla y está frio, hasta que se calienta", 23, 190);
-    doc.setLineWidth(0.1);
-    doc.rect(20, 185, 165, 25);
-
-
-    doc.text("¿Desde cuándo le duele?", 20, 220);
-    
-    doc.text("Desde hace dos semanas que empezó a jugar al Baloncesto", 23, 230);
-    doc.setLineWidth(0.1);
-    doc.rect(20, 225, 165, 25);
-
-
-    doc.text("Lesiones previas:", 20, 260);
-
-    doc.text("Hernias discales en la columna", 23, 270);
-    doc.setLineWidth(0.1);
-    doc.rect(20, 265, 165, 25);
+   // console.log(props.Pdata);
+    var paitentPdfData = props.Pdata;
+    console.log(paitentPdfData);
+       const doc  = new jsPDF();
+       const pdfWidth = doc.internal.pageSize.getWidth();
+       doc.internal.scaleFactor = 1.33;
+       doc.setFont("centred", "normal");
+       doc.setFontSize(11);
+       doc.text("Paciente: "+` ${paitentPdfData.name}`, 20, 30, null, null,);
    
-    doc.addPage();
+       doc.setFontSize(11);
+       
+       doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+   
+       doc.setFontSize(11);
+       doc.text("Fecha de la visita: "+` ${paitentPdfData.painDuration}`, 20, 40, null, null,);
+   
+       doc.setFontSize(11);
+       doc.text("Hora: 08:56", 100, 40, null, null,);
+    
 
+       doc.setFontSize(11);
+       // doc.setFont("paciente", "bold");
+       doc.text("Antecedentes del paciente", 20, 60);
+       doc.setLineWidth(0.60);
+       doc.line(20, 62, 180, 62);
+       
+       doc.setFontSize(11);
+       doc.text("Edad", 20, 70);
+   
+       doc.setFontSize(11);
+       doc.text(`${paitentPdfData.age}`, 40, 70);
+   
+       doc.setFontSize(11);
+       doc.text("Sexo", 20, 75);
+   
+       doc.setFontSize(11);
+       doc.text(`${paitentPdfData.sex}`, 40, 75);
+   
+       doc.setFontSize(11);
+       doc.text("Trabajo", 20, 80);
+   
+       doc.setFontSize(11);
+       doc.text("Comercial", 40, 80);
+   
+   
+       doc.setFontSize(11);
+       doc.text("Peso", 120, 70);
+   
+       doc.setFontSize(11);
+       doc.text(`${paitentPdfData.weight}`, 140, 70);
+   
+       doc.setFontSize(11);
+       doc.text("Altura", 120, 75);
+   
+       doc.setFontSize(11);
+       doc.text(`${paitentPdfData.height}`, 140, 75);
+   
+       doc.setFontSize(11);
+       doc.text("Hobby", 120, 80);
+   
+       doc.setFontSize(11);
+       doc.text(`${paitentPdfData.hobby}`, 140, 80);
+   
+       doc.text("¿Dónde tiene el dolor?", 20, 100);
+   
+       doc.text(`${paitentPdfData.painLocation}`, 23, 110);
+       doc.setLineWidth(0.1);
+       doc.rect(20, 105, 165, 25);
+   
+       doc.text("¿Qué tipo de dolor?", 20, 140);
+   
+        doc.text(`${paitentPdfData.painType}`, 23, 150);
+       doc.setLineWidth(0.1);
+       doc.rect(20, 145, 165, 25);
+   
+       doc.text("¿En qué situaciones le duele?", 20, 180);
+       
+       doc.text(`${paitentPdfData.painSituation}`, 23, 190);
+       doc.setLineWidth(0.1);
+       doc.rect(20, 185, 165, 25);
+   
+   
+       doc.text("¿Desde cuándo le duele?", 20, 220);
+       
+       doc.text(`${paitentPdfData.painDuration}`, 23, 230);
+       doc.setLineWidth(0.1);
+       doc.rect(20, 225, 165, 25);
+   
+   
+       doc.text("Lesiones previas:", 20, 260);
+   
+       doc.text(`${paitentPdfData.previousInjury}`, 23, 270);
+       doc.setLineWidth(0.1);
+       doc.rect(20, 265, 165, 25);
+      
+       doc.addPage();
+   
+       doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+   
+       doc.text("Observación clínica", 20, 30);
+       doc.setLineWidth(0.60);
+       doc.line(20, 33, 180, 33);
+   
+       doc.text("Angulaciones", 20, 39);
+   
+       doc.text("Angulaciones de flexo-extensión pie izquierdo:", 20, 48);
+
+     
+    doc.addImage(imgs.img1,'png',0,50,pdfWidth,140, undefined,'FAST');
+    doc.text("Angulaciones de flexo-extensión pie derecho:", 20, 165);
+    doc.addImage(imgs.img2,'png',0,170,pdfWidth,140, undefined,'FAST');
+    doc.addPage();
     doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
 
     doc.text("Observación clínica", 20, 30);
     doc.setLineWidth(0.60);
     doc.line(20, 33, 180, 33);
-
-    doc.text("Angulaciones", 20, 39);
-
-    doc.text("Angulaciones de flexo-extensión pie izquierdo:", 20, 48);
-
-     
-    doc.addImage(imgs.img1,'JPEG',0,50,200,160);
-    doc.addPage();
-    doc.addImage(imgs.img2,'JPEG',0,50,200,160);
-    doc.addPage();
-    doc.addImage(imgs.img3,'JPEG',0,50,200,160);
-    doc.addPage();
-    doc.addImage(imgs.img4,'JPEG',0,50,200,160);
+    doc.addImage(imgs.img3,'png',0,50,pdfWidth,140, undefined,'FAST');
+   
+    doc.addImage(imgs.img4,'png',0,150,pdfWidth,140, undefined,'FAST');
     doc.addPage();
 
-    doc.addPage();
+
 
     doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
 
@@ -285,12 +296,17 @@ const downlaoadimg = (imgs)=>{
   
 
     doc.addImage(imgs.img5,'JPEG',0,50,200,160);
+    
+    doc.addImage(imgs.img6,'JPEG',0,150,200,160);
+   
     doc.addPage();
-    doc.addImage(imgs.img6,'JPEG',0,50,200,160);
-    doc.addPage();
+    doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+    doc.text("Observación clínica", 20, 30);
+    doc.setLineWidth(0.60);
+    doc.line(20, 33, 180, 33);
     doc.addImage(imgs.img7,'JPEG',0,50,200,160);
-    doc.addPage();
-    doc.addImage(imgs.img8,'JPEG',0,50,200,160);
+ 
+    doc.addImage(imgs.img8,'JPEG',0,150,200,160);
     
 
     doc.addPage();
@@ -302,46 +318,43 @@ const downlaoadimg = (imgs)=>{
     doc.line(20, 33, 180, 33);
    
 
-    doc.addImage(imgs.img9,'JPEG',20,50,200,160);
-    doc.addPage();
-    doc.addImage(imgs.img10,'JPEG',20,50,200,160);
+    doc.addImage(imgs.img9,'JPEG',0,50,200,160);
+    
+    doc.addImage(imgs.img10,'JPEG',0,150,200,160);
  
 
+  
     doc.addPage();
 
     doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
-
+ 
    doc.text("Observación clínica", 20, 30);
    doc.setLineWidth(0.60);
    doc.line(20, 33, 180, 33);
-
-   doc.text("Presiones promedio", 20, 120);
-
-   doc.addImage("./images/"+props.leftLeg, "png", 45, 122, 80, 80);
-   
-   doc.addImage("./images/"+props.rightLeg, "png", 95, 122, 80, 80);
-   
-
+ 
    doc.addPage();
-
+ 
    doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
-
-  doc.text("Observación clínica", 20, 30);
+ 
+  doc.text("Diagnóstico", 20, 30);
   doc.setLineWidth(0.60);
-  doc.line(20, 33, 180, 33);
-  doc.text(props.diagnosticText, 14, 60);
-  doc.addPage();
+  doc.line(20, 32, 180, 32);
+  
+  doc.text(props.diagnosticText, 20, 38);
+ 
+  doc.text("Recomendación de tratamiento", 20, 60);
+  doc.setLineWidth(0.60);
+  doc.line(20, 63, 180, 63);
+ 
+  doc.text(props.recomendText, 20, 67);
+     doc.output('dataurlnewwindow');
 
-  doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
 
- doc.text("Observación clínica", 20, 30);
- doc.setLineWidth(0.60);
- doc.line(20, 33, 180, 33);
- doc.text(props.recomendText, 14, 60);
-
+ 
         
-doc.save("observation.pdf");
-props.setLoading(false)
+  doc.save("observation.pdf");
+//doc.output('dataurlnewwindow');
+ props.setLoading(false)
 }
 
 const setGraphData = (data) => {
@@ -418,13 +431,18 @@ const setGraphData = (data) => {
        xaxis:{
         title:{
             text:'Tiempo (s)'
-        }
+        },
      },
      yaxis:{
         title:{
             text:'Grados (º)'
         }
      },
+     legend: {
+        font:{
+            size:2
+        }
+     }
     };
 
     setLayout1(layout1);

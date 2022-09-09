@@ -81,7 +81,7 @@ const [recomendText,setRecomendText] = useState('');
     setLoading(true)
     getPatientService(selectedUserId)
     .then(data=>{
-     
+     console.log(data);
       setPaitents(data.data)
       setLoading(false)
     })
@@ -95,7 +95,7 @@ const [recomendText,setRecomendText] = useState('');
     setLoading(true);
     getPatientSessionService(selectedPaitentId)
     .then(data=>{
-     
+      console.log(data);
     
       setSessionDates(data.data)
       setLoading(false)
@@ -112,8 +112,7 @@ const [recomendText,setRecomendText] = useState('');
   }
 
   const testingPdfDownlaod = ()=>{
-    console.log(paitentPdfData)
-
+   
     const doc  = new jsPDF();
     doc.setFont("centred", "normal");
     doc.setFontSize(11);
@@ -294,11 +293,7 @@ const [recomendText,setRecomendText] = useState('');
 
   return (
     <>
-    <button type='button3' onClick={testingPdfDownlaod}>Test</button>
-     <div className="form-group">
-            <label for="Diagnóstico">Diagnóstico</label>
-            <textarea className="form-control" rows="3"></textarea>
-         </div>
+  
 
 
     <div className="row mb-3">
@@ -368,6 +363,7 @@ const [recomendText,setRecomendText] = useState('');
         ( <>
         
           <GraphComponent 
+            Pdata = {paitentPdfData}
             setLoading={setLoading} 
             leftLeg={leftLeg} 
             rightLeg={rightLeg} 

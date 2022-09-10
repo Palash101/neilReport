@@ -102,7 +102,7 @@ const createLayout1 = (var1,var2) => {
     })
 
     setData1(D11);
-    return Plotly.toImage('plot1', { format: 'png', width: 600, height: 300 }).then(function (dataURL) {
+    return Plotly.toImage('plot1', { format: 'png', width: 2000, height: 600 }).then(function (dataURL) {
         return dataURL;
     });
 
@@ -122,9 +122,11 @@ const createLayout2 = (var1,var2) => {
     })
 
     setData2(D11);
-    return Plotly.toImage('plot2', { format: 'png', width: 600, height: 300 }).then(function (dataURL) {
+    return Plotly.toImage('plot2', { format: 'png', width: 2000, height: 700 }).then(function (dataURL) {
         return dataURL;
     });
+
+    console.log(D11,'Images Data');
 
 }
 
@@ -295,18 +297,18 @@ const downlaoadimg = (imgs)=>{
 
   
 
-    doc.addImage(imgs.img5,'JPEG',0,50,200,160);
+    doc.addImage(imgs.img5,'JPEG',0,50,pdfWidth,160);
     
-    doc.addImage(imgs.img6,'JPEG',0,150,200,160);
+    doc.addImage(imgs.img6,'JPEG',0,150,pdfWidth,160);
    
     doc.addPage();
     doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
     doc.text("Observación clínica", 20, 30);
     doc.setLineWidth(0.60);
     doc.line(20, 33, 180, 33);
-    doc.addImage(imgs.img7,'JPEG',0,50,200,160);
+    doc.addImage(imgs.img7,'png',0,50,pdfWidth,160);
  
-    doc.addImage(imgs.img8,'JPEG',0,150,200,160);
+    doc.addImage(imgs.img8,'png',0,150,pdfWidth,160);
     
 
     doc.addPage();
@@ -318,9 +320,9 @@ const downlaoadimg = (imgs)=>{
     doc.line(20, 33, 180, 33);
    
 
-    doc.addImage(imgs.img9,'JPEG',0,50,200,160);
+    doc.addImage(imgs.img9,'png',0,50,pdfWidth,160);
     
-    doc.addImage(imgs.img10,'JPEG',0,150,200,160);
+    doc.addImage(imgs.img10,'png',0,150,pdfWidth,160);
  
 
   
@@ -339,14 +341,16 @@ const downlaoadimg = (imgs)=>{
   doc.text("Diagnóstico", 20, 30);
   doc.setLineWidth(0.60);
   doc.line(20, 32, 180, 32);
-  
-  doc.text(props.diagnosticText, 20, 38);
+  var dText = doc.splitTextToSize(props.diagnosticText, 400)
+
+  doc.text(dText, 20, 38);
  
   doc.text("Recomendación de tratamiento", 20, 60);
   doc.setLineWidth(0.60);
   doc.line(20, 63, 180, 63);
- 
-  doc.text(props.recomendText, 20, 67);
+  var rText = doc.splitTextToSize(props.recomendText, 400)
+  doc.text(rText, 20, 67);
+  console.log(imgs,'Image before pdf generatuon')
      doc.output('dataurlnewwindow');
 
 

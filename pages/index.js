@@ -370,6 +370,7 @@ const [recomendText,setRecomendText] = useState('');
             diagnosticText={diagnosticText} 
             recomendText={recomendText} 
             data={graphData} 
+            sessionData={sessionDates.filter(item => item.id === selectedSession)}
           />
 
        <div className="form-group">

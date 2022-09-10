@@ -3,7 +3,7 @@ import * as Plotly from 'plotly.js';
 import { jsPDF,HTMLOptionImage } from "jspdf";
 
 import {useEffect,useState} from 'react';
-import { array } from 'prop-types';
+import moment from 'moment'
 
 function GraphComponent(props){
 	const [allData,setAllData] = useState(props.data[0]);
@@ -20,6 +20,8 @@ function GraphComponent(props){
 
     const [min2,setMin2] = useState();
     const [max2,setMax2] = useState();
+
+    const sessionDate = moment(props.sessionData[0].startTime).format('DD-MM-YYYY HH:mm:ss');
 
 
 // left
@@ -83,6 +85,7 @@ const [imagePdfArray,setImagePdfArray] = useState({})
 
 
 useEffect(()=>{
+   
 	    setGraphData(props.data[0]);
 },[])
 
@@ -102,7 +105,7 @@ const createLayout1 = (var1,var2) => {
     })
 
     setData1(D11);
-    return Plotly.toImage('plot1', { format: 'png', width: 2000, height: 600 }).then(function (dataURL) {
+    return Plotly.toImage('plot1', { format: 'png', width: 1000, height: 500 }).then(function (dataURL) {
         return dataURL;
     });
 
@@ -122,7 +125,7 @@ const createLayout2 = (var1,var2) => {
     })
 
     setData2(D11);
-    return Plotly.toImage('plot2', { format: 'png', width: 2000, height: 700 }).then(function (dataURL) {
+    return Plotly.toImage('plot2', { format: 'png', width: 1000, height: 500 }).then(function (dataURL) {
         return dataURL;
     });
 
@@ -132,43 +135,58 @@ const createLayout2 = (var1,var2) => {
 
 
 const downlaoadimg1 = async() => {
-     props.setLoading(true)
-   var img1 = await createLayout1(4,6);
-   var img2 = await createLayout1(5,7);
-   var img3 = await createLayout1(0,2);
-   var img4 = await createLayout1(1,3);
 
-   var img5 = await createLayout2(0,2);
-   var img6 = await createLayout2(1,3);
-   var img7 = await createLayout2(6,9);
-   var img8 = await createLayout2(7,9);
-   var img9 = await createLayout2(4,9);
-   var img10 = await createLayout2(5,9);
-    var imgs = {
-        img1:img1,
-        img2:img2,
-        img3:img3,
-        img4:img4,
-        img5:img5,
-        img6:img6,
-        img7:img7,
-        img8:img8,
-        img9:img9,
-        img10:img10,
-    };
+    if(!props.leftLeg && !props.rightLeg){
+        alert("Please select left leg and right leg.")
+        return;
+    }
+    else if(!props.recomendText){
+        alert("please enter recommended text.")
+        return;
+    }
+    else if(!props.diagnosticText){
+        alert("please enter Diagnóstico text")
+        return;
+    }
+    else{
+         props.setLoading(true)
+        var img1 = await createLayout1(4,6);
+        console.log(img1)
+    var img2 = await createLayout1(5,7);
+    var img3 = await createLayout1(0,2);
+    var img4 = await createLayout1(1,3);
 
-   setGData(imgs);
-   downlaoadimg(imgs)
-   
+    var img5 = await createLayout2(0,2);
+    var img6 = await createLayout2(1,3);
+    var img7 = await createLayout2(6,9);
+    var img8 = await createLayout2(7,9);
+    var img9 = await createLayout2(4,9);
+    var img10 = await createLayout2(5,9);
+        var imgs = {
+            img1:img1,
+            img2:img2,
+            img3:img3,
+            img4:img4,
+            img5:img5,
+            img6:img6,
+            img7:img7,
+            img8:img8,
+            img9:img9,
+            img10:img10,
+        };
+
+    setGData(imgs);
+    downlaoadimg(imgs)
+    }
 }
 
 
 const downlaoadimg = (imgs)=>{
    // console.log(props.Pdata);
     var paitentPdfData = props.Pdata;
-    console.log(paitentPdfData);
+    console.log(paitentPdfData,'paitentPdfData');
        const doc  = new jsPDF();
-       const pdfWidth = doc.internal.pageSize.getWidth();
+       const pdfWidth = doc.internal.pageSize.getWidth() - 40;
        doc.internal.scaleFactor = 1.33;
        doc.setFont("centred", "normal");
        doc.setFontSize(11);
@@ -179,10 +197,10 @@ const downlaoadimg = (imgs)=>{
        doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
    
        doc.setFontSize(11);
-       doc.text("Fecha de la visita: "+` ${paitentPdfData.painDuration}`, 20, 40, null, null,);
+       doc.text("Fecha de la visita: "+` ${moment(props.sessionData[0].startTime).format('DD-MM-YYYY')}`, 20, 40, null, null,);
    
        doc.setFontSize(11);
-       doc.text("Hora: 08:56", 100, 40, null, null,);
+       doc.text("Hora: "+`${moment(props.sessionData[0].startTime).format('HH:mm:ss')}`, 100, 40, null, null,);
     
 
        doc.setFontSize(11);
@@ -232,33 +250,33 @@ const downlaoadimg = (imgs)=>{
    
        doc.text(`${paitentPdfData.painLocation}`, 23, 110);
        doc.setLineWidth(0.1);
-       doc.rect(20, 105, 165, 25);
+       doc.rect(20, 105, 150, 25);
    
        doc.text("¿Qué tipo de dolor?", 20, 140);
    
         doc.text(`${paitentPdfData.painType}`, 23, 150);
        doc.setLineWidth(0.1);
-       doc.rect(20, 145, 165, 25);
+       doc.rect(20, 145, 150, 25);
    
        doc.text("¿En qué situaciones le duele?", 20, 180);
        
        doc.text(`${paitentPdfData.painSituation}`, 23, 190);
        doc.setLineWidth(0.1);
-       doc.rect(20, 185, 165, 25);
+       doc.rect(20, 185, 150, 25);
    
    
        doc.text("¿Desde cuándo le duele?", 20, 220);
        
        doc.text(`${paitentPdfData.painDuration}`, 23, 230);
        doc.setLineWidth(0.1);
-       doc.rect(20, 225, 165, 25);
+       doc.rect(20, 225, 150, 25);
    
    
        doc.text("Lesiones previas:", 20, 260);
    
        doc.text(`${paitentPdfData.previousInjury}`, 23, 270);
        doc.setLineWidth(0.1);
-       doc.rect(20, 265, 165, 25);
+       doc.rect(20, 265, 150, 25);
       
        doc.addPage();
    
@@ -273,18 +291,19 @@ const downlaoadimg = (imgs)=>{
        doc.text("Angulaciones de flexo-extensión pie izquierdo:", 20, 48);
 
      
-    doc.addImage(imgs.img1,'png',0,50,pdfWidth,140, undefined,'FAST');
-    doc.text("Angulaciones de flexo-extensión pie derecho:", 20, 165);
-    doc.addImage(imgs.img2,'png',0,170,pdfWidth,140, undefined,'FAST');
+    doc.addImage(imgs.img1,'png',20,50,pdfWidth,pdfWidth/2, undefined,'FAST');
+    doc.text("Angulaciones de flexo-extensión pie derecho:", 20, 150);
+    doc.addImage(imgs.img2,'png',20,155,pdfWidth,pdfWidth/2, undefined,'FAST');
     doc.addPage();
     doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
 
     doc.text("Observación clínica", 20, 30);
     doc.setLineWidth(0.60);
     doc.line(20, 33, 180, 33);
-    doc.addImage(imgs.img3,'png',0,50,pdfWidth,140, undefined,'FAST');
-   
-    doc.addImage(imgs.img4,'png',0,150,pdfWidth,140, undefined,'FAST');
+    doc.text("Angulaciones de pronosupinación pie izquierdo:", 20, 48);
+    doc.addImage(imgs.img3,'png',20,50,pdfWidth,pdfWidth/2, undefined,'FAST');
+    doc.text("Angulaciones de pronosupinación pie derecho:", 20, 150);
+    doc.addImage(imgs.img4,'png',20,155,pdfWidth,pdfWidth/2, undefined,'FAST');
     doc.addPage();
 
 
@@ -296,19 +315,20 @@ const downlaoadimg = (imgs)=>{
     doc.line(20, 33, 180, 33);
 
   
-
-    doc.addImage(imgs.img5,'JPEG',0,50,pdfWidth,160);
-    
-    doc.addImage(imgs.img6,'JPEG',0,150,pdfWidth,160);
+    doc.text("Tiempo de apoyo y tiempo de vuelo del pie izquierdo:", 20, 48);
+    doc.addImage(imgs.img5,'JPEG',20,50,pdfWidth,pdfWidth/2);
+    doc.text("Tiempo de apoyo y tiempo de vuelo del pie derecho:", 20, 150);
+    doc.addImage(imgs.img6,'JPEG',20,155,pdfWidth,pdfWidth/2);
    
     doc.addPage();
     doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
     doc.text("Observación clínica", 20, 30);
     doc.setLineWidth(0.60);
     doc.line(20, 33, 180, 33);
-    doc.addImage(imgs.img7,'png',0,50,pdfWidth,160);
- 
-    doc.addImage(imgs.img8,'png',0,150,pdfWidth,160);
+    doc.text("Longitud del pie izquierdo:", 20, 48);
+    doc.addImage(imgs.img7,'png',20,50,pdfWidth,pdfWidth/2);
+    doc.text("Longitud del pie derecho:", 20, 150);
+    doc.addImage(imgs.img8,'png',20,155,pdfWidth,pdfWidth/2);
     
 
     doc.addPage();
@@ -319,10 +339,10 @@ const downlaoadimg = (imgs)=>{
     doc.setLineWidth(0.60);
     doc.line(20, 33, 180, 33);
    
-
-    doc.addImage(imgs.img9,'png',0,50,pdfWidth,160);
-    
-    doc.addImage(imgs.img10,'png',0,150,pdfWidth,160);
+    doc.text("Altura del pie izquierdo:", 20, 48);
+    doc.addImage(imgs.img9,'png',20,50,pdfWidth,pdfWidth/2);
+    doc.text("Altura del pie derecho:", 20, 150);
+    doc.addImage(imgs.img10,'png',20,155,pdfWidth,pdfWidth/2);
  
 
   
@@ -333,7 +353,11 @@ const downlaoadimg = (imgs)=>{
    doc.text("Observación clínica", 20, 30);
    doc.setLineWidth(0.60);
    doc.line(20, 33, 180, 33);
- 
+   
+   doc.text("Presiones promedio", 20, 48);
+   doc.addImage('./images/'+props.leftLeg,'png',50,60,80,80);
+   doc.addImage('./images/'+props.rightLeg,'png',100,60,80,80);
+
    doc.addPage();
  
    doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
@@ -431,7 +455,8 @@ const setGraphData = (data) => {
      trace8 = {x: r_timeStamp2,y: r_degreeH, type: 'scatter',mode: 'markers+text',name: 'Flexión Dorsal (dch)',marker: { size: 8 },visible:'none'};
      graphData1 = [trace1, trace2, trace3, trace4,trace5,trace6,trace7,trace8];
      layout1 = {
-     title:'Angulaciones',
+      
+     title:sessionDate,
        xaxis:{
         title:{
             text:'Tiempo (s)'
@@ -466,7 +491,7 @@ const setGraphData = (data) => {
 
   var graphData2 = [strace1, strace2, strace3, strace4, strace5, strace6, strace7, strace8];
    layout2 = {
-     title:'Zancada',
+     title:sessionDate,
      xaxis:{
         title:{
             text:'Tiempo (s)'
@@ -556,7 +581,7 @@ const setGraphData1 = (data) => {
      trace8 = {x: r_timeStamp2,y: r_degreeH, type: 'scatter',mode: 'markers+text',name: 'Flexión Dorsal (dch)',marker: { size: 8 },visible:'none'};
      graphData1 = [trace1, trace2, trace3, trace4,trace5,trace6,trace7,trace8];
      layout1 = {
-     title:'Angulaciones',
+     title:sessionDate,
        xaxis:{
         title:{
             text:'Tiempo (s)'
@@ -648,7 +673,7 @@ const setGraphData2 = (data) => {
   var graphData2 = [strace1, strace2, strace3, strace4, strace5, strace6, strace7, strace8];
    
    layout2 = {
-     title:'Zancada',
+     title:sessionDate,
      xaxis:{
         title:{
             text:'Tiempo (s)'
@@ -665,99 +690,12 @@ const setGraphData2 = (data) => {
     setData2(graphData2);
 }
 
-const setGraphData3 = (data) => {
-
-    for(let i =0 ;i<data.length; i++){
-        const time_stamp = data[i].ts;
-        const variables = data[i].v;
-        if(variables[0] == 1){
-            if(variables[1] == 0){
-                 l_stancetime.push(variables [2])
-                l_flytime.push(variables [3])
-                l_cadence.push(variables [4]) 
-                l_steps.push(variables [5]) 
-                l_length.push(variables [6])
-                l_height.push(variables [7])
-                l_timeStamp1.push(time_stamp)
-
-            }
-            else if(variables[1] == 1){
-                r_stancetime.push(variables [2])
-                r_flytime.push(variables [3])
-                r_cadence.push(variables [4]) 
-                r_steps.push(variables [5]) 
-                r_length.push(variables [6])
-                r_height.push(variables [7])
-                r_timeStamp1.push(time_stamp)
-
-            }
-        }
-        else if(variables[0] == 2){
-            if(variables[1] == 0){
-                 l_degreesR.push(variables [2])
-                l_degreesL.push(variables [3])
-                l_degreeH.push(variables [4])
-                l_degreeF.push(variables [5])
-                l_degreeO.push(variables [6])
-                l_degreeI.push(variables [7])
-                l_strengthM1.push(variables [8])
-                l_strengthM5.push(variables [9])
-                l_strengthH.push(variables [10])
-                l_timeStamp2.push(time_stamp)
-
-            }
-            else if(variables[1] == 1){
-                r_degreesR.push(variables [2])
-                r_degreesL.push(variables [3])
-                r_degreeH.push(variables [4])
-                r_degreeF.push(variables [5])
-                r_degreeO.push(variables [6])
-                r_degreeI.push(variables [7])
-                r_strengthM1.push(variables [8])
-                r_strengthM5.push(variables [9])
-                r_strengthH.push(variables [10])
-                r_timeStamp2.push(time_stamp)
-
-            }
-
-        }
-
-
-    }
-
-
-    var graph1 = {x: l_timeStamp1,y: l_flytime,type: 'scatter',mode: 'lines',name: 'Tiempo vuelo (izq)'};
-    var graph2 = {x: r_timeStamp1,y: r_flytime,type: 'scatter',mode: 'lines',name: 'Tiempo vuelo (dch)'};
-    var graph3 = {x: l_timeStamp1,y: l_stancetime,type: 'scatter',mode: 'lines',name: 'Tiempo apoyo (izq)'};
-    var graph4 = {x: r_timeStamp1,y: r_stancetime, type: 'scatter',mode: 'lines',name: 'Tiempo apoyo (dch)'};
- 
- 
-    var graphData3 = [graph1, graph2, graph3, graph4];
-    var layout3 = {
-     title:'Zancada flytime',
-     xaxis:{
-        title:{
-            text:'Tiempo (s)'
-        }
-     },
-     yaxis:{
-        title:{
-            text:'Tiempo de fase (ms)'
-        }
-     },
-    };
-    setLayout3(layout3);
-     setData3(graphData3);
-}
 
 const reset1 = () => {
     setGraphData1(allData)
 }
 const reset2 = () => {
     setGraphData2(allData)
-}
-const reset3 = () => {
-    setGraphData3(allData)
 }
 
 const showMap1 = () => {

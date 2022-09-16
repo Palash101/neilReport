@@ -467,11 +467,6 @@ const setGraphData = (data) => {
             text:'Grados (º)'
         }
      },
-     legend: {
-        font:{
-            size:2
-        }
-     }
     };
 
     setLayout1(layout1);

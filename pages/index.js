@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import {useState,useEffect} from 'react'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import dynamic from 'next/dynamic'
  import { jsPDF,HTMLOptionImage } from "jspdf";
@@ -303,6 +302,7 @@ const [recomendText,setRecomendText] = useState('');
           <label>Select patient email for get patients </label>
           <div className='input-group mb-3 mt-1'>
             <select className='form-control' onChange={e => setSelectedUsertId(e.target.value) }>
+            <option value='' selected>Select</option>
               { users.map((user, index) => (
                   <option key={index} value={user.uid}>{user.email}</option>
               ))}

@@ -124,8 +124,8 @@ const [recomendText,setRecomendText] = useState('');
     doc.setFontSize(11);
     doc.text("Fecha de la visita: "+` ${paitentPdfData.painDuration}`, 20, 40, null, null,);
 
-    doc.setFontSize(11);
-    doc.text("Hora: 08:56", 100, 40, null, null,);
+    doc.setFontSize();
+    doc.text("Hora: 0811:56", 100, 40, null, null,);
     
 
     doc.setFontSize(11);
@@ -271,8 +271,9 @@ const [recomendText,setRecomendText] = useState('');
  doc.line(20, 55, 180, 55);
 
  doc.text("Debido al dolor izquierdo en la rodilla, realiza un apoyo mayor en la pierna derecha", 20, 60);
-    doc.output('dataurlnewwindow');
-
+    // doc.output('dataurlnewwindow');
+    console.log('dasdasd')
+   
 
 
   }
@@ -465,3 +466,5 @@ const [recomendText,setRecomendText] = useState('');
 
   )
 }
+
+

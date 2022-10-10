@@ -189,14 +189,14 @@ const downlaoadimg = (imgs)=>{
        const pdfWidth = doc.internal.pageSize.getWidth() - 40;
        doc.internal.scaleFactor = 1.33;
        doc.setFont("centred", "normal");
-       doc.setFontSize(11);
+       doc.setFontSize(11).setFont(undefined, 'bold');
        doc.text("Paciente: "+` ${paitentPdfData.name}`, 20, 30, null, null,);
    
        doc.setFontSize(11);
        
-       doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+       doc.addImage("./images/logo.png", "png", 165, 10, 30, 15);
    
-       doc.setFontSize(11);
+       doc.setFontSize(11).setFont(undefined, 'normal');
        doc.text("Fecha de la visita: "+` ${moment(props.sessionData[0].startTime).format('DD-MM-YYYY')}`, 20, 40, null, null,);
    
        doc.setFontSize(11);
@@ -207,7 +207,7 @@ const downlaoadimg = (imgs)=>{
        // doc.setFont("paciente", "bold");
        doc.text("Antecedentes del paciente", 20, 60);
        doc.setLineWidth(0.60);
-       doc.line(20, 62, 180, 62);
+       doc.line(20, 62, 195, 62);
        
        doc.setFontSize(11);
        doc.text("Edad", 20, 70);
@@ -237,7 +237,7 @@ const downlaoadimg = (imgs)=>{
        doc.setFontSize(11);
        doc.text("Altura", 120, 75);
    
-       doc.setFontSize(11);
+       doc.setFontSize(11).setFont(undefined, 'bold');
        doc.text(`${paitentPdfData.height}`, 140, 75);
    
        doc.setFontSize(11);
@@ -280,14 +280,15 @@ const downlaoadimg = (imgs)=>{
       
        doc.addPage();
    
-       doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+       doc.addImage("./images/logo.png", "png", 165, 10, 30, 15);
    
        doc.text("Observación clínica", 20, 30);
        doc.setLineWidth(0.60);
-       doc.line(20, 33, 180, 33);
+       doc.line(20, 33, 195, 33);
    
        doc.text("Angulaciones", 20, 39);
-   
+       doc.setLineWidth(0.5);
+       doc.line(20, 40, 43, 40);
        doc.text("Angulaciones de flexo-extensión pie izquierdo:", 20, 48);
 
      
@@ -295,11 +296,11 @@ const downlaoadimg = (imgs)=>{
     doc.text("Angulaciones de flexo-extensión pie derecho:", 20, 150);
     doc.addImage(imgs.img2,'png',20,155,pdfWidth,pdfWidth/2, undefined,'FAST');
     doc.addPage();
-    doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+    doc.addImage("./images/logo.png", "png", 165, 10, 30, 15);
 
     doc.text("Observación clínica", 20, 30);
     doc.setLineWidth(0.60);
-    doc.line(20, 33, 180, 33);
+    doc.line(20, 33, 195, 33);
     doc.text("Angulaciones de pronosupinación pie izquierdo:", 20, 48);
     doc.addImage(imgs.img3,'png',20,50,pdfWidth,pdfWidth/2, undefined,'FAST');
     doc.text("Angulaciones de pronosupinación pie derecho:", 20, 150);
@@ -308,11 +309,11 @@ const downlaoadimg = (imgs)=>{
 
 
 
-    doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+    doc.addImage("./images/logo.png", "png",165, 10, 30, 15);
 
     doc.text("Observación clínica", 20, 30);
     doc.setLineWidth(0.60);
-    doc.line(20, 33, 180, 33);
+    doc.line(20, 33, 195, 33);
 
   
     doc.text("Tiempo de apoyo y tiempo de vuelo del pie izquierdo:", 20, 48);
@@ -321,10 +322,10 @@ const downlaoadimg = (imgs)=>{
     doc.addImage(imgs.img6,'JPEG',20,155,pdfWidth,pdfWidth/2);
    
     doc.addPage();
-    doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+    doc.addImage("./images/logo.png", "png", 165, 10, 30, 15);
     doc.text("Observación clínica", 20, 30);
     doc.setLineWidth(0.60);
-    doc.line(20, 33, 180, 33);
+    doc.line(20, 33, 195, 33);
     doc.text("Longitud del pie izquierdo:", 20, 48);
     doc.addImage(imgs.img7,'png',20,50,pdfWidth,pdfWidth/2);
     doc.text("Longitud del pie derecho:", 20, 150);
@@ -333,11 +334,11 @@ const downlaoadimg = (imgs)=>{
 
     doc.addPage();
 
-     doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+     doc.addImage("./images/logo.png", "png", 165, 10, 30, 15);
 
     doc.text("Observación clínica", 20, 30);
     doc.setLineWidth(0.60);
-    doc.line(20, 33, 180, 33);
+    doc.line(20, 33, 195, 33);
    
     doc.text("Altura del pie izquierdo:", 20, 48);
     doc.addImage(imgs.img9,'png',20,50,pdfWidth,pdfWidth/2);
@@ -348,40 +349,35 @@ const downlaoadimg = (imgs)=>{
   
     doc.addPage();
 
-    doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+    doc.addImage("./images/logo.png", "png", 165, 10, 30, 15);
  
    doc.text("Observación clínica", 20, 30);
    doc.setLineWidth(0.60);
-   doc.line(20, 33, 180, 33);
+   doc.line(20, 33, 195, 33);
    
    doc.text("Presiones promedio", 20, 48);
+   doc.setLineWidth(0.5);
+   doc.line(20, 49, 52, 49);
    doc.addImage('./images/'+props.leftLeg,'png',50,60,80,80);
    doc.addImage('./images/'+props.rightLeg,'png',100,60,80,80);
 
    doc.addPage();
  
-   doc.addImage("./images/logo.png", "png", 175, 5, 30, 15);
+   doc.addImage("./images/logo.png", "png", 165, 10, 30, 15);
  
   doc.text("Diagnóstico", 20, 30);
   doc.setLineWidth(0.60);
-  doc.line(20, 32, 180, 32);
+  doc.line(20, 32, 195, 32);
   var dText = doc.splitTextToSize(props.diagnosticText, 400)
 
   doc.text(dText, 20, 38);
  
   doc.text("Recomendación de tratamiento", 20, 60);
   doc.setLineWidth(0.60);
-  doc.line(20, 63, 180, 63);
+  doc.line(20, 63, 195, 63);
   var rText = doc.splitTextToSize(props.recomendText, 400)
   doc.text(rText, 20, 67);
-  console.log(imgs,'Image before pdf generatuon')
-     doc.output('dataurlnewwindow');
-
-
- 
-        
-  doc.save("observation.pdf");
-//doc.output('dataurlnewwindow');
+   doc.save("observation.pdf");
  props.setLoading(false)
 }
 

@@ -1,3 +1,4 @@
+// const apiRoute = 'https://us-west3-neiltech.cloudfunctions.net/report-generation'
 const apiRoute = 'https://europe-west3-smart-footwear-sport.cloudfunctions.net/policyAccept-2'
 
 
@@ -21,11 +22,12 @@ export const getPatientService = (uId) => {
              return data
         })
 }
-export const getPatientSessionService = (paitentId) => {
+export const getPatientSessionService = (paitentId,expertId) => {
     return fetch(apiRoute + '/getPaitentSessions', {
         method: 'POST',
         body: JSON.stringify({
-            paitentId: paitentId
+            paitentId: paitentId,
+            expertId: expertId
         }),
     })
         .then(response => response.json())
@@ -34,12 +36,13 @@ export const getPatientSessionService = (paitentId) => {
           
         })
 }
-export const getSessionDataService = (paitentId,sessionId) => {
+export const getSessionDataService = (paitentId,sessionId,expertId) => {
     return fetch(apiRoute + '/getSessionsData', {
         method: 'POST',
         body: JSON.stringify({
             paitentId: paitentId,
-            sessionId: sessionId
+            sessionId: sessionId,
+            expertId: expertId
         }),
     })
         .then(response => response.json())

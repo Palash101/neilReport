@@ -92,7 +92,7 @@ const [recomendText,setRecomendText] = useState('');
       return;
     }
     setLoading(true);
-    getPatientSessionService(selectedPaitentId)
+    getPatientSessionService(selectedPaitentId,selectedUserId)
     .then(data=>{
       console.log(data);
     
@@ -103,7 +103,7 @@ const [recomendText,setRecomendText] = useState('');
 
   const getSessionData = ()=>{
     setLoading(true);
-    getSessionDataService(selectedPaitentId,selectedSession).then(data=>
+    getSessionDataService(selectedPaitentId,selectedSession,selectedUserId).then(data=>
       {
         setGraphData(data.data)
         setLoading(false)
@@ -275,6 +275,7 @@ const [recomendText,setRecomendText] = useState('');
     console.log('dasdasd')
    
 
+    
 
   }
 

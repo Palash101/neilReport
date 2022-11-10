@@ -182,9 +182,32 @@ const downlaoadimg1 = async() => {
 
 
 const downlaoadimg = (imgs)=>{
-   // console.log(props.Pdata);
     var paitentPdfData = props.Pdata;
-    console.log(paitentPdfData,'paitentPdfData');
+    var paitentPdfData = props.Pdata;
+    var paitentPdfData = props.Pdata;
+    var NameValue = props.diagnosticText;
+    var lengthNew = NameValue.split(" ").length
+    var setLenth = 0
+    var setNextPage = false
+    var setNextPageLenth = 0
+    if(lengthNew < 50){
+     setLenth = lengthNew
+     setNextPage = false
+     setNextPageLenth = setLenth+60
+    }else if(lengthNew > 50 && lengthNew < 300){
+         setLenth = lengthNew+35
+         setNextPage = false
+         setNextPageLenth = setLenth
+    }else if(lengthNew > 300){
+         setLenth = lengthNew+55
+         setNextPage = true
+         setNextPageLenth = 30
+    }
+
+    
+    console.log(lengthNew,setLenth,setNextPage,setNextPageLenth);
+    // var lengthData = lengthNew / 20;
+    // console.log(lengthData * 20
        const doc  = new jsPDF();
        const pdfWidth = doc.internal.pageSize.getWidth() - 40;
        doc.internal.scaleFactor = 1.33;
@@ -371,12 +394,14 @@ const downlaoadimg = (imgs)=>{
   var dText = doc.splitTextToSize(props.diagnosticText, 400)
 
   doc.text(dText, 20, 38);
- 
-  doc.text("Recomendación de tratamiento", 20, 60);
+ if(setNextPage){
+    doc.addPage();
+ }
+  doc.text("Recomendación de tratamiento", 20, setNextPageLenth-13);
   doc.setLineWidth(0.60);
-  doc.line(20, 63, 195, 63);
+  doc.line(20, setNextPageLenth-10, 195, setNextPageLenth-10);
   var rText = doc.splitTextToSize(props.recomendText, 400)
-  doc.text(rText, 20, 67);
+  doc.text(rText, 20, setNextPageLenth);
    doc.save("observation.pdf");
  props.setLoading(false)
 }
